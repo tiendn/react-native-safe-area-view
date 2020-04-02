@@ -5,7 +5,6 @@ import {
   InteractionManager,
   LayoutChangeEvent,
   StyleSheet,
-  View,
   ViewStyle,
   ViewProperties,
 } from 'react-native';
@@ -44,6 +43,10 @@ interface State {
   viewWidth: number;
   viewHeight: number;
 }
+
+// note(brentvatne): Animated.View is typed as any in @types/react-native, so
+// let's improve that a bit here
+interface AnimatedView {}
 
 export default class SafeAreaView extends React.Component<Props, State> {
   static contextType: any = SafeAreaContext;
@@ -97,8 +100,8 @@ export default class SafeAreaView extends React.Component<Props, State> {
 
     const { width: WIDTH, height: HEIGHT } = getResolvedDimensions();
 
-    this._view.current
-      .measureInWindow((realX, realY, winWidth, winHeight) => {
+    this._view.current.measureInWindow(
+      (realX: number, realY: number, winWidth: number, winHeight: number) => {
         if (!this._view.current) {
           return;
         }
@@ -127,7 +130,8 @@ export default class SafeAreaView extends React.Component<Props, State> {
         if (!shallowEquals(nextState, this.state)) {
           this.setState(nextState);
         }
-      });
+      }
+    );
   };
 
   _getSafeAreaStyle = () => {
