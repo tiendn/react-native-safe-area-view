@@ -46,7 +46,9 @@ interface State {
 
 // note(brentvatne): Animated.View is typed as any in @types/react-native, so
 // let's improve that a bit here
-interface AnimatedView {}
+interface AnimatedView {
+  measureInWindow: Function;
+}
 
 export default class SafeAreaView extends React.Component<Props, State> {
   static contextType: any = SafeAreaContext;
